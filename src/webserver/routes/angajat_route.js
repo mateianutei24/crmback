@@ -83,7 +83,24 @@ module.exports = function angajatRoute(controller, model) {
       next(error);
     }
   });
+  router.route("/pagination").get(async (req, res, next) => {
+    try {
+      const paginationObject = model.buildPaginationReq({
+        limita: parseInt(req.query.limita),
+        last_id: req.query.last_id,
+      });
 
+      const response = await controller.getObjectsPagination(
+        '"Angajati"',
+        paginationObject.getLimita(),
+        paginationObject.getLastId(),
+        "angajat_id"
+      );
+      res.status(200).send(response);
+    } catch (error) {
+      next(error);
+    }
+  });
   router
     .route("/tip")
     .get(async (req, res, next) => {

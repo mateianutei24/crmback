@@ -31,6 +31,7 @@ module.exports = function server(controller, model) {
   app.use("/produse", routes.produseRoute);
   app.use("/puncteLucru", routes.punctLucruRoute);
   app.use("/vanzari", routes.vanzariRoute);
+  app.use("/persoaneContact", routes.persoaneContactRoute);
   function run() {
     app.listen(PORT, () => {
       console.log(`up and running on ${PORT}`);

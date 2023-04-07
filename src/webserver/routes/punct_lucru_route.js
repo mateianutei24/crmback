@@ -79,5 +79,23 @@ module.exports = function punctLucruRoute(controller, model) {
       next(error);
     }
   });
+
+  router.route("/pagination").get(async (req, res, next) => {
+    try {
+      const paginationObject = model.buildPaginationReq({
+        limita: parseInt(req.query.limita),
+        last_id: req.query.last_id,
+      });
+      const response = await controller.getObjectsPagination(
+        '"Puncte de lucru"',
+        paginationObject.getLimita(),
+        paginationObject.getLastId(),
+        "punct_lucru_id"
+      );
+      res.status(200).send(response);
+    } catch (error) {
+      next(error);
+    }
+  });
   return router;
 };

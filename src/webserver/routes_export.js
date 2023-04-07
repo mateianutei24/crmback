@@ -10,6 +10,8 @@ function routesExport(controller, model) {
   const produseRouteImport = require("./routes/produse_route");
   const punctLucruRouteImport = require("./routes/punct_lucru_route");
   const vanzariRouteImport = require("./routes/vanzari_route");
+  const persoaneContactRouteImport = require("./routes/persoane_contact_route");
+
   return {
     mainRoute: mainRouteImport(controller, model),
     angajatiRoute: angajatRouteImport(controller, model),
@@ -22,6 +24,7 @@ function routesExport(controller, model) {
     produseRoute: produseRouteImport(controller, model),
     punctLucruRoute: punctLucruRouteImport(controller, model),
     vanzariRoute: vanzariRouteImport(controller, model),
+    persoaneContactRoute: persoaneContactRouteImport(controller, model),
   };
 }
 

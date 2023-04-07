@@ -89,7 +89,7 @@ module.exports = function companieRoute(controller, model) {
         next(error);
       }
     });
-  router.route("/getPagination").get(async (req, res, next) => {
+  router.route("/pagination").get(async (req, res, next) => {
     try {
       const paginationObject = model.buildPaginationReq({
         limita: parseInt(req.query.limita),
@@ -110,14 +110,6 @@ module.exports = function companieRoute(controller, model) {
   router.route("/leads").get(async (req, res, next) => {
     try {
       res.status(200).send("test leads");
-    } catch (error) {
-      next(error);
-    }
-  });
-
-  router.route("/persoaneContact").get(async (req, res, next) => {
-    try {
-      res.status(200).send("test persoana contact");
     } catch (error) {
       next(error);
     }
