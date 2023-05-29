@@ -51,7 +51,7 @@ module.exports = Joi.object().keys({
       error.code = 400;
       throw error;
     }),
-  adresa_emitere: Joi.string()
+  data_emitere: Joi.string()
     .required()
     .strict()
     .error(() => {

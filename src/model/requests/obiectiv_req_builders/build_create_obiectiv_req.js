@@ -2,7 +2,7 @@ const buildCreateObiectivReq = (createObiectivReqValidator) => {
   return ({
     tip_obiectiv,
     titlu_obiectiv,
-    nisa,
+    nisa_id,
     punct_lucru_id,
     companie_id,
     vanzari_totale,
@@ -14,7 +14,7 @@ const buildCreateObiectivReq = (createObiectivReqValidator) => {
     let { error } = createObiectivReqValidator({
       tip_obiectiv,
       titlu_obiectiv,
-      nisa,
+      nisa_id,
       punct_lucru_id,
       companie_id,
       vanzari_totale,
@@ -28,7 +28,7 @@ const buildCreateObiectivReq = (createObiectivReqValidator) => {
     return {
       getTipObiectiv: () => tip_obiectiv,
       getTitluObiectiv: () => titlu_obiectiv,
-      getNisa: () => nisa,
+      getNisa: () => nisa_id,
       getPunctLucruId: () => punct_lucru_id,
       getCompanieId: () => companie_id,
       getVanzariTotale: () => vanzari_totale,

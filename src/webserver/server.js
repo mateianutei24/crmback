@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
-module.exports = function server(controller, model) {
+module.exports = function server(useCases, model) {
   const app = express();
   app.use(express.json());
   app.use(cors());
@@ -18,7 +18,7 @@ module.exports = function server(controller, model) {
   });
 
   const routesImport = require("./routes_export");
-  const routes = routesImport(controller, model);
+  const routes = routesImport(useCases, model);
 
   app.use("/", routes.mainRoute);
   app.use("/actiuni", routes.actiuniRoute);

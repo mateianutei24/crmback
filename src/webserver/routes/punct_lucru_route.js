@@ -1,6 +1,6 @@
 const express = require("express");
 
-module.exports = function punctLucruRoute(controller, model) {
+module.exports = function punctLucruRoute(useCases, model) {
   const router = express.Router();
 
   router
@@ -10,10 +10,8 @@ module.exports = function punctLucruRoute(controller, model) {
         const readPunctLucruReqObj = model.buildReadPunctLucruReq({
           punct_lucru_id: req.query.punctLucruId,
         });
-        const response = await controller.getObject(
-          '"Puncte de lucru"',
-          "punct_lucru_id",
-          readPunctLucruReqObj.getPunctLucruId()
+        const response = await useCases.readPunctLucruUseCase(
+          readPunctLucruReqObj
         );
         res.status(200).send(response);
       } catch (error) {
@@ -23,14 +21,8 @@ module.exports = function punctLucruRoute(controller, model) {
     .post(async (req, res, next) => {
       try {
         const createPunctLucruReqObj = model.buildCreatePunctLucruReq(req.body);
-        const response = await controller.addIntoDatabase(
-          `"Puncte de lucru"(nume_punct_lucru, adresa, locatie_gps,vanzari_totale) VALUES($1,$2,$3,$4)`,
-          [
-            createPunctLucruReqObj.getNumePunctLucru(),
-            createPunctLucruReqObj.getAdresa(),
-            createPunctLucruReqObj.getLocatieGps(),
-            createPunctLucruReqObj.getVanzariTotale(),
-          ]
+        const response = await useCases.addPunctLucruUseCase(
+          createPunctLucruReqObj
         );
         res.status(200).send("Punct de lucru adaugat cu succes");
       } catch (error) {
@@ -40,10 +32,8 @@ module.exports = function punctLucruRoute(controller, model) {
     .delete(async (req, res, next) => {
       try {
         const deletePunctLucruReqObj = model.buildDeletePunctLucruReq(req.body);
-        const response = await controller.deleteFromDatabase(
-          '"Puncte de lucru"',
-          "punct_lucru_id",
-          deletePunctLucruReqObj.getPunctLucruId()
+        const response = await useCases.deletePunctLucruUseCase(
+          deletePunctLucruReqObj
         );
         res.status(200).send("Punct de Lucru sters cu succes");
       } catch (error) {
@@ -53,17 +43,8 @@ module.exports = function punctLucruRoute(controller, model) {
     .patch(async (req, res, next) => {
       try {
         const updatePunctLucruReqObj = model.buildUpdatePunctLucruReq(req.body);
-        const response = await controller.updateOneObject(
-          `"Puncte de lucru" SET punct_lucru_id = $1 , nume_punct_lucru = $2, adresa = $3, locatie_gps=$4, vanzari_totale=$5 `,
-          "punct_lucru_id",
-          updatePunctLucruReqObj.getPunctLucruId(),
-          [
-            updatePunctLucruReqObj.getPunctLucruId(),
-            updatePunctLucruReqObj.getNumePunctLucru(),
-            updatePunctLucruReqObj.getAdresa(),
-            updatePunctLucruReqObj.getLocatieGps(),
-            updatePunctLucruReqObj.getVanzariTotale(),
-          ]
+        const response = await useCases.updatePunctLucruUseCase(
+          updatePunctLucruReqObj
         );
         res.status(200).send("Punct de Lucru updatat cu succes");
       } catch (error) {
@@ -71,26 +52,14 @@ module.exports = function punctLucruRoute(controller, model) {
       }
     });
 
-  router.route("/getAll").get(async (req, res, next) => {
-    try {
-      const response = await controller.getAllObjects('"Puncte de lucru"');
-      res.status(200).send(response);
-    } catch (error) {
-      next(error);
-    }
-  });
-
   router.route("/pagination").get(async (req, res, next) => {
     try {
       const paginationObject = model.buildPaginationReq({
         limita: parseInt(req.query.limita),
         last_id: req.query.last_id,
       });
-      const response = await controller.getObjectsPagination(
-        '"Puncte de lucru"',
-        paginationObject.getLimita(),
-        paginationObject.getLastId(),
-        "punct_lucru_id"
+      const response = await useCases.getPuncteLucruPaginationUseCase(
+        paginationObject
       );
       res.status(200).send(response);
     } catch (error) {

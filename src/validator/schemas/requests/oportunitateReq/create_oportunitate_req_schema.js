@@ -15,6 +15,13 @@ module.exports = Joi.object().keys({
       error.code = 400;
       throw error;
     }),
+  tip_oportunitate: Joi.string()
+    .strict()
+    .error(() => {
+      var error = new Error("tip oportunitate  incorect");
+      error.code = 400;
+      throw error;
+    }),
   data_creare_initiala: Joi.string()
     .required()
     .strict()

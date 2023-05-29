@@ -2,6 +2,7 @@ const buildCreateOportunitateReq = (createOportunitateReqValidator) => {
   return ({
     descriere,
     titlu_oportunitate,
+    tip_oportunitate,
     data_creare_initiala,
     data_emitere,
     perioada_desfasurare,
@@ -13,6 +14,7 @@ const buildCreateOportunitateReq = (createOportunitateReqValidator) => {
     let { error } = createOportunitateReqValidator({
       descriere,
       titlu_oportunitate,
+      tip_oportunitate,
       data_creare_initiala,
       data_emitere,
       perioada_desfasurare,
@@ -26,6 +28,7 @@ const buildCreateOportunitateReq = (createOportunitateReqValidator) => {
     return {
       getDescriere: () => descriere,
       getTitluOportunitate: () => titlu_oportunitate,
+      getTipOportunitate: () => tip_oportunitate,
       getDataCreareInitiala: () => data_creare_initiala,
       getDataEmitere: () => data_emitere,
       getPerioadaDesfasurare: () => perioada_desfasurare,

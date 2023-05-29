@@ -1,6 +1,6 @@
 const express = require("express");
 
-module.exports = function niseRoute(controller, model) {
+module.exports = function niseRoute(useCases, model) {
   const router = express.Router();
 
   router
@@ -10,11 +10,7 @@ module.exports = function niseRoute(controller, model) {
         const readNisaReqObj = model.buildReadNisaReq({
           nisa_id: req.query.nisa_id,
         });
-        const response = await controller.getObject(
-          '"Nise"',
-          "nisa_id",
-          readNisaReqObj.getNisaId()
-        );
+        const response = await useCases.readNisaUseCase(readNisaReqObj);
         res.status(200).send(response);
       } catch (error) {
         next(error);
@@ -23,14 +19,7 @@ module.exports = function niseRoute(controller, model) {
     .post(async (req, res, next) => {
       try {
         const createNisaReqObj = model.buildCreateNisaReq(req.body);
-        const response = await controller.addIntoDatabase(
-          `"Nise"(nume_nisa,vanzari_totale,persoana_responsabila) VALUES($1,$2,$3)`,
-          [
-            createNisaReqObj.getNumeNisa(),
-            createNisaReqObj.getVanzariTotale(),
-            createNisaReqObj.getPersoanaResponsabila(),
-          ]
-        );
+        const response = await useCases.addNisaUseCase(createNisaReqObj);
         res.status(200).send("Nisa adaugata cu success");
       } catch (error) {
         next(error);
@@ -39,16 +28,7 @@ module.exports = function niseRoute(controller, model) {
     .patch(async (req, res, next) => {
       try {
         const updateNisaReqObj = model.buildUpdateNisaReq(req.body);
-        const response = await controller.updateOneObject(
-          `"Nise" SET nume_nisa =$1, vanzari_totale = $2, persoana_responsabila=$3`,
-          "nisa_id",
-          updateNisaReqObj.getNisaId(),
-          [
-            updateNisaReqObj.getNumeNisa(),
-            updateNisaReqObj.getVanzariTotale(),
-            updateNisaReqObj.getPersoanaResponsabila(),
-          ]
-        );
+        const response = await useCases.updateNisaUseCase(updateNisaReqObj);
         res.status(200).send("Nisa updatata cu succes");
       } catch (error) {
         next(error);
@@ -57,19 +37,23 @@ module.exports = function niseRoute(controller, model) {
     .delete(async (req, res, next) => {
       try {
         const deleteNisaReqObj = model.buildDeleteNisaReq(req.body);
-        const response = await controller.deleteFromDatabase(
-          '"Nise"',
-          "nisa_id",
-          deleteNisaReqObj.getNisaId()
-        );
+
+        const response = await useCases.deleteNisaUseCase(deleteNisaReqObj);
         res.status(200).send("Nisa stearsa cu succes");
       } catch (error) {
         next(error);
       }
     });
-  router.route("/getAll").get(async (req, res, next) => {
+  router.route("/pagination").get(async (req, res, next) => {
     try {
-      const response = await controller.getAllObjects('"Nise"');
+      const paginationObject = model.buildPaginationReq({
+        limita: parseInt(req.query.limita),
+        last_id: req.query.last_id,
+      });
+
+      const response = await useCases.getNisePaginationUseCase(
+        paginationObject
+      );
       res.status(200).send(response);
     } catch (error) {
       next(error);

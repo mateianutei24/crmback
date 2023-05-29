@@ -1,4 +1,4 @@
-function routesExport(controller, model) {
+function routesExport(useCases, model) {
   const mainRouteImport = require("./routes/main_route");
   const actiuniRouteImport = require("./routes/actiuni_route");
   const angajatRouteImport = require("./routes/angajat_route");
@@ -13,18 +13,18 @@ function routesExport(controller, model) {
   const persoaneContactRouteImport = require("./routes/persoane_contact_route");
 
   return {
-    mainRoute: mainRouteImport(controller, model),
-    angajatiRoute: angajatRouteImport(controller, model),
-    actiuniRoute: actiuniRouteImport(controller, model),
-    companieRoute: companieRouteImport(controller, model),
-    configurariRoute: configurariRouteImport(controller, model),
-    niseRoute: niseRouteImport(controller, model),
-    obiectiveRoute: obiectiveRouteImport(controller, model),
-    oportunitatiRoute: oportunitatiRouteImport(controller, model),
-    produseRoute: produseRouteImport(controller, model),
-    punctLucruRoute: punctLucruRouteImport(controller, model),
-    vanzariRoute: vanzariRouteImport(controller, model),
-    persoaneContactRoute: persoaneContactRouteImport(controller, model),
+    mainRoute: mainRouteImport(useCases, model),
+    angajatiRoute: angajatRouteImport(useCases, model),
+    actiuniRoute: actiuniRouteImport(useCases, model),
+    companieRoute: companieRouteImport(useCases, model),
+    configurariRoute: configurariRouteImport(useCases, model),
+    niseRoute: niseRouteImport(useCases, model),
+    obiectiveRoute: obiectiveRouteImport(useCases, model),
+    oportunitatiRoute: oportunitatiRouteImport(useCases, model),
+    produseRoute: produseRouteImport(useCases, model),
+    punctLucruRoute: punctLucruRouteImport(useCases, model),
+    vanzariRoute: vanzariRouteImport(useCases, model),
+    persoaneContactRoute: persoaneContactRouteImport(useCases, model),
   };
 }
 

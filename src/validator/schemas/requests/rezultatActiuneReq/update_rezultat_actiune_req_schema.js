@@ -30,4 +30,11 @@ module.exports = Joi.object().keys({
       error.code = 400;
       throw error;
     }),
+  rezultat_descriere: Joi.string()
+    .strict()
+    .error(() => {
+      var error = new Error("rezultat descriere incorect");
+      error.code = 400;
+      throw error;
+    }),
 });

@@ -48,9 +48,9 @@ module.exports = function modelImplementation(validators) {
 
   // LEAD REQUEST BUILDERS
   const buildCreateLeadReq = require("./requests/lead_req_builders/build_create_lead_req");
-  const buildReadLeadReq = require("./requests/lead_req_builders/build_create_lead_req");
-  const buildUpdateLeadReq = require("./requests/lead_req_builders/build_create_lead_req");
-  const buildDeleteLeadReq = require("./requests/lead_req_builders/build_create_lead_req");
+  const buildReadLeadReq = require("./requests/lead_req_builders/build_read_lead_req");
+  const buildUpdateLeadReq = require("./requests/lead_req_builders/build_update_lead_req");
+  const buildDeleteLeadReq = require("./requests/lead_req_builders/build_delete_lead_req");
 
   //MARIME COMPANIE REQUEST BUILDERS
   const buildCreateMarimeCompanieReq = require("./requests/marime_companie_req_builders/build_create_marime_companie_req");

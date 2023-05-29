@@ -1,6 +1,6 @@
 const express = require("express");
 
-module.exports = function angajatRoute(controller, model) {
+module.exports = function angajatRoute(useCases, model) {
   const router = express.Router();
 
   router
@@ -10,11 +10,8 @@ module.exports = function angajatRoute(controller, model) {
         const readAngajatReqObj = model.buildReadAngajatReq({
           angajat_id: req.query.angajat_id,
         });
-        const response = await controller.getObject(
-          '"Angajati"',
-          "angajat_id",
-          readAngajatReqObj.getAngajatId()
-        );
+
+        const response = await useCases.readAngajatUseCase(readAngajatReqObj);
         res.status(200).send(response);
       } catch (error) {
         next(error);
@@ -23,18 +20,8 @@ module.exports = function angajatRoute(controller, model) {
     .post(async (req, res, next) => {
       try {
         const createAngajatReqObj = model.buildCreateAngajatReq(req.body);
-        const response = await controller.addIntoDatabase(
-          `"Angajati"(nume,prenume,tip,functie,email,numar_telefon,punct_lucru_id) VALUES($1,$2,$3,$4,$5,$6,$7)`,
-          [
-            createAngajatReqObj.getNume(),
-            createAngajatReqObj.getPrenume(),
-            createAngajatReqObj.getTip(),
-            createAngajatReqObj.getFunctie(),
-            createAngajatReqObj.getEmail(),
-            createAngajatReqObj.getNumarTelefon(),
-            createAngajatReqObj.getPunctLucruId(),
-          ]
-        );
+
+        const response = await useCases.addAngajatUseCase(createAngajatReqObj);
         res.status(200).send("Angajat adaugat cu succes");
       } catch (error) {
         next(error);
@@ -42,13 +29,13 @@ module.exports = function angajatRoute(controller, model) {
     })
     .delete(async (req, res, next) => {
       try {
-        const deleteAngajatReqObj = model.buildDeleteAngajatReq(req.body);
-        const response = await controller.deleteFromDatabase(
-          '"Angajati"',
-          "angajat_id",
-          deleteAngajatReqObj.getAngajatId()
-        );
+        const deleteAngajatReqObj = model.buildReadAngajatReq(req.body);
+
         res.status(200).send("Angajat sters cu succes");
+        console.log(deleteAngajatReqObj);
+        const response = await useCases.deleteAngajatUseCase(
+          deleteAngajatReqObj
+        );
       } catch (error) {
         next(error);
       }
@@ -56,19 +43,9 @@ module.exports = function angajatRoute(controller, model) {
     .patch(async (req, res, next) => {
       try {
         const updateAngajatReqObj = model.buildUpdateAngajatReq(req.body);
-        const response = await controller.updateOneObject(
-          `"Angajati" SET nume =$2, prenume = $3, tip = $4, functie = $5, email = $6, numar_telefon = $7, punct_lucru_id = $8`,
-          "angajat_id",
-          updateAngajatReqObj.getAngajatId(),
-          [
-            updateAngajatReqObj.getNume(),
-            updateAngajatReqObj.getPrenume(),
-            updateAngajatReqObj.getTip(),
-            updateAngajatReqObj.getFunctie(),
-            updateAngajatReqObj.getEmail(),
-            updateAngajatReqObj.getNumarTelefon(),
-            updateAngajatReqObj.getPunctLucruId(),
-          ]
+
+        const response = await useCases.updateAngajatUseCase(
+          updateAngajatReqObj
         );
         res.status(200).send("Angajat updatat cu succes");
       } catch (error) {
@@ -90,11 +67,8 @@ module.exports = function angajatRoute(controller, model) {
         last_id: req.query.last_id,
       });
 
-      const response = await controller.getObjectsPagination(
-        '"Angajati"',
-        paginationObject.getLimita(),
-        paginationObject.getLastId(),
-        "angajat_id"
+      const response = await useCases.getAngajatiPaginationUseCase(
+        paginationObject
       );
       res.status(200).send(response);
     } catch (error) {
@@ -108,10 +82,8 @@ module.exports = function angajatRoute(controller, model) {
         const readTipAngajatReqObj = model.buildReadTipAngajatReq({
           tip_angajat_id: req.query.tip_angajat_id,
         });
-        const response = await controller.getObject(
-          '"Tipuri Angajati"',
-          "tip_angajat_id",
-          readTipAngajatReqObj.getTipAngajatId()
+        const response = await useCases.readTipAngajatUseCase(
+          readTipAngajatReqObj
         );
         res.status(200).send(response);
       } catch (error) {
@@ -121,9 +93,8 @@ module.exports = function angajatRoute(controller, model) {
     .post(async (req, res, next) => {
       try {
         const createTipAngajatReqObj = model.buildCreateTipAngajatReq(req.body);
-        const response = await controller.addIntoDatabase(
-          `"Tipuri Angajati"(nume_tip_angajat) VALUES($1)`,
-          [createTipAngajatReqObj.getNumeTipAngajat()]
+        const response = await useCases.addTipAngajatUseCase(
+          createTipAngajatReqObj
         );
         res.status(200).send("Tip angajat adaugat cu succes");
       } catch (error) {
@@ -133,10 +104,8 @@ module.exports = function angajatRoute(controller, model) {
     .delete(async (req, res, next) => {
       try {
         const deleteTipAngajatReqObj = model.buildDeleteTipAngajatReq(req.body);
-        const response = await controller.deleteFromDatabase(
-          '"Tipuri Angajati"',
-          "tip_angajat_id",
-          deleteTipAngajatReqObj.getTipAngajatId()
+        const response = await useCases.deleteTipAngajatUseCase(
+          deleteTipAngajatReqObj
         );
         res.status(200).send("Tip angajat sters cu succes");
       } catch (error) {
@@ -146,11 +115,8 @@ module.exports = function angajatRoute(controller, model) {
     .patch(async (req, res, next) => {
       try {
         const updateTipAngajatReqObj = model.buildUpdateTipAngajatReq(req.body);
-        const response = await controller.updateOneObject(
-          `"Tipuri Angajati" SET nume_tip_angajat =$1 `,
-          "tip_angajat_id",
-          updateTipAngajatReqObj.getTipAngajatId(),
-          [updateTipAngajatReqObj.getNumeTipAngajat()]
+        const response = await useCases.updateTipAngajatUseCase(
+          updateTipAngajatReqObj
         );
         res.status(200).send("Tip angajat updatat cu succes");
       } catch (error) {
@@ -158,10 +124,17 @@ module.exports = function angajatRoute(controller, model) {
       }
     });
 
-  router.route("/tip/getAll").get(async (req, res, next) => {
-    const response = await controller.getAllObjects('"Tipuri Angajati"');
+  router.route("/tip/pagination").get(async (req, res, next) => {
+    const paginationObject = model.buildPaginationReq({
+      limita: parseInt(req.query.limita),
+      last_id: req.query.last_id,
+    });
+    const response = await useCases.getTipuriAngajatiPaginationUseCase(
+      paginationObject
+    );
     res.status(200).send(response);
   });
+
   router
     .route("/functie")
     .get(async (req, res, next) => {
@@ -169,10 +142,9 @@ module.exports = function angajatRoute(controller, model) {
         const readFunctieAngajatReqObj = model.buildReadFunctieAngajatReq({
           functie_angajat_id: req.query.functie_angajat_id,
         });
-        const response = await controller.getObject(
-          '"Functii Angajati"',
-          "functie_angajat_id",
-          readFunctieAngajatReqObj.getFunctieAngajatId()
+
+        const response = await useCases.readFunctieAngajatUseCase(
+          readFunctieAngajatReqObj
         );
         res.status(200).send(response);
       } catch (error) {
@@ -183,9 +155,9 @@ module.exports = function angajatRoute(controller, model) {
       try {
         const createFunctieAngajatReqObject =
           model.buildCreateFunctieAngajatReq(req.body);
-        const response = await controller.addIntoDatabase(
-          `"Functii Angajati"(nume_functie_angajat) VALUES($1)`,
-          [createFunctieAngajatReqObject.getNumeFunctieAngajat()]
+
+        const response = await useCases.addFunctieAngajatUseCase(
+          createFunctieAngajatReqObject
         );
         res.status(200).send("Functie angajat  adaugata cu succes");
       } catch (error) {
@@ -197,10 +169,9 @@ module.exports = function angajatRoute(controller, model) {
         const deleteFunctieAngajatReqObj = model.buildDeleteFunctieAngajatReq(
           req.body
         );
-        const response = await controller.deleteFromDatabase(
-          '"Functii Angajati"',
-          "functie_angajat_id",
-          deleteFunctieAngajatReqObj.getFunctieAngajatId()
+
+        const response = await useCases.deleteFunctieAngajatUseCase(
+          deleteFunctieAngajatReqObj
         );
         res.status(200).send("Functie angajat stearsa cu succes");
       } catch (error) {
@@ -212,20 +183,24 @@ module.exports = function angajatRoute(controller, model) {
         const updateFunctieAngajatReqObj = model.buildUpdateFunctieAngajatReq(
           req.body
         );
-        const response = await controller.updateOneObject(
-          `"Functii Angajati" SET nume_functie_angajat =$1 `,
-          "functie_angajat_id",
-          updateFunctieAngajatReqObj.getFunctieAngajatId(),
-          [updateFunctieAngajatReqObj.getNumeFunctieAngajat()]
+
+        const response = await useCases.updateFunctieAngajatUseCase(
+          updateFunctieAngajatReqObj
         );
         res.status(200).send("Tip angajat updatat cu succes");
       } catch (error) {
         next(error);
       }
     });
-  router.route("/functie/getAll").get(async (req, res, next) => {
+  router.route("/functie/pagination").get(async (req, res, next) => {
     try {
-      const response = await controller.getAllObjects('"Functii Angajati"');
+      const paginationObject = model.buildPaginationReq({
+        limita: parseInt(req.query.limita),
+        last_id: req.query.last_id,
+      });
+      const response = await useCases.getFunctiiAngajatiPaginationUseCase(
+        paginationObject
+      );
       res.status(200).send(response);
     } catch (error) {
       next(error);

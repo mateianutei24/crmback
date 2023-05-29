@@ -1,7 +1,7 @@
 const buildCreateTipObiectivReq = (createTipObiectivReqValidator) => {
-  return ({ nume_tip_oportunitate } = {}) => {
+  return ({ nume_tip_obiectiv } = {}) => {
     let { error } = createTipObiectivReqValidator({
-      nume_tip_oportunitate,
+      nume_tip_obiectiv,
     });
     if (error) throw new Error(error);
 
