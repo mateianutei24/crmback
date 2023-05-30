@@ -7,16 +7,6 @@ module.exports = function server(useCases, model) {
   app.use(cors());
   const PORT = 5800;
 
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    res.send({
-      error: {
-        status: err.status || 500,
-        message: err.message,
-      },
-    });
-  });
-
   const routesImport = require("./routes_export");
   const routes = routesImport(useCases, model);
 
@@ -32,6 +22,16 @@ module.exports = function server(useCases, model) {
   app.use("/puncteLucru", routes.punctLucruRoute);
   app.use("/vanzari", routes.vanzariRoute);
   app.use("/persoaneContact", routes.persoaneContactRoute);
+
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.send({
+      error: {
+        status: err.status || 500,
+        message: err.message,
+      },
+    });
+  });
   function run() {
     app.listen(PORT, () => {
       console.log(`up and running on ${PORT}`);
