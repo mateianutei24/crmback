@@ -154,6 +154,10 @@ module.exports = function useCases(dataController) {
   const deleteRezultat = require("./rezultate_actiuni/deleteRezultatActiune");
   const getRezultatePagination = require("./rezultate_actiuni/getRezultateActiunePagination");
   const getRezultateForActiunePagination = require("./rezultate_actiuni/getRezultateForActiunePagination");
+
+  //auth use cases
+  const addAngajatAuthJwt = require("./angajat_auth_jwt/addAngajatAuthJwt");
+  const getAngajatAuthJwt = require("./angajat_auth_jwt/getAngajatAuthJwt");
   return {
     // use cases pentru companii
     readCompanieUseCase: (requestObject) =>
@@ -420,5 +424,11 @@ module.exports = function useCases(dataController) {
       getRezultatePagination(dataController, requestObject),
     getRezultateForActiunePaginationUseCase: (requestObject) =>
       getRezultateForActiunePagination(dataController, requestObject),
+
+    //auth use cases
+    addAngajatAuthUseCase: (requestObject) =>
+      addAngajatAuthJwt(dataController, requestObject),
+    getAngajatAuthUseCase: (requestObject) =>
+      getAngajatAuthJwt(dataController, requestObject),
   };
 };

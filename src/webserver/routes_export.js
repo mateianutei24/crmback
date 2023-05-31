@@ -11,7 +11,7 @@ function routesExport(useCases, model) {
   const punctLucruRouteImport = require("./routes/punct_lucru_route");
   const vanzariRouteImport = require("./routes/vanzari_route");
   const persoaneContactRouteImport = require("./routes/persoane_contact_route");
-
+  const authRouteImport = require("./routes/auth_route");
   return {
     mainRoute: mainRouteImport(useCases, model),
     angajatiRoute: angajatRouteImport(useCases, model),
@@ -25,6 +25,7 @@ function routesExport(useCases, model) {
     punctLucruRoute: punctLucruRouteImport(useCases, model),
     vanzariRoute: vanzariRouteImport(useCases, model),
     persoaneContactRoute: persoaneContactRouteImport(useCases, model),
+    authRoute: authRouteImport(useCases, model),
   };
 }
 

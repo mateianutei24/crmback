@@ -150,6 +150,9 @@ module.exports = function modelImplementation(validators) {
   const buildUpdateTipObiectivReq = require("./requests/tip_obiectiv_req_builders/build_update_tip_obiectiv_req");
 
   const buildPaginationReq = require("./requests/build_pagination_req");
+
+  //auth
+  const buildCreateAngajatAuthJwtReq = require("./requests/angajat_auth_jwt_req_builders/build_create_angajat_auth_jwt_req");
   return {
     buildActiune: buildActiune(validators.actiuneValidator),
     buildActivitateCompanie: buildActivitateCompanie(
@@ -470,6 +473,11 @@ module.exports = function modelImplementation(validators) {
 
     buildPaginationReq: buildPaginationReq(
       validators.paginationRequestValidator
+    ),
+
+    // AUTHENTIFICATION
+    buildCreateAngajatAuthJwtReq: buildCreateAngajatAuthJwtReq(
+      validators.createAngajatAuthJwtRequestValidator
     ),
   };
 };

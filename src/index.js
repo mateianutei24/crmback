@@ -16,6 +16,8 @@ async function main() {
   const postgres = postgresImport(connection);
 
   const dataController = dataControllerImport(postgres);
+
+  
   const useCases = useCasesImport(dataController);
 
   const validators = validatorsImport();
