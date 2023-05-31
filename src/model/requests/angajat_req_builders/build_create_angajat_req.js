@@ -1,5 +1,6 @@
 const buildCreateAngajatReq = (createAngajatReqValidator) => {
   return ({
+    angajat_id,
     nume,
     prenume,
     tip_angajat_id,
@@ -9,6 +10,7 @@ const buildCreateAngajatReq = (createAngajatReqValidator) => {
     punct_lucru_id,
   } = {}) => {
     let { error } = createAngajatReqValidator({
+      angajat_id,
       nume,
       prenume,
       tip_angajat_id,
@@ -20,6 +22,7 @@ const buildCreateAngajatReq = (createAngajatReqValidator) => {
     if (error) throw new Error(error);
 
     return {
+      getAngajatId: () => angajat_id,
       getNume: () => nume,
       getPrenume: () => prenume,
       getTip: () => tip_angajat_id,

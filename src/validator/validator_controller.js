@@ -167,6 +167,8 @@ module.exports = function validator_controller() {
 
   const pagination_request = require("./schemas/requests/pagination_request_validator");
 
+  //authentification
+  const createAngajatAuthJwt = require("./schemas/requests/angajatAuthJwtReq/createAngajatAuthJwt");
   return {
     // OBJECTS VALIDATORS //
 
@@ -418,5 +420,9 @@ module.exports = function validator_controller() {
 
     paginationRequestValidator: (payload) =>
       JoiValidator(payload, pagination_request),
+
+    //auth requests
+    createAngajatAuthJwtRequestValidator: (payload) =>
+      JoiValidator(payload, createAngajatAuthJwt),
   };
 };
