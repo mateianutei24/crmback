@@ -57,7 +57,9 @@ module.exports = function companieRoute(useCases, model) {
       const response = await useCases.getCompaniiPaginationUseCase(
         paginationObject
       );
-      res.status(200).send(response);
+      response["status"] = 200;
+
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -113,7 +115,8 @@ module.exports = function companieRoute(useCases, model) {
       const response = await useCases.getLeadsPaginationUseCase(
         paginationObject
       );
-      res.status(200).send(response);
+      response["status"] = 200;
+      res.json(response);
     } catch (error) {
       next(error);
     }

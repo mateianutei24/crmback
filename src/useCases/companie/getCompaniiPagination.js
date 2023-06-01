@@ -17,10 +17,24 @@ module.exports = async function getCompaniiPagination(
     ' LEFT JOIN "Punct de lucru" on "Companie".punct_lucru_id = "Punct de lucru".punct_lucru_id';
 
   if (last_id == "start") {
-    query += ` ORDER BY companie_id LIMIT ${limita};`;
+    query += ` ORDER BY companie_id LIMIT ${limita + 1};`;
   } else {
-    query += ` WHERE companie_id > '${last_id}' ORDER BY companie_id LIMIT ${limita};`;
+    query += ` WHERE companie_id > '${last_id}' ORDER BY companie_id LIMIT ${
+      limita + 1
+    };`;
   }
 
-  return await dataController.performQuery(query);
+  const res = await dataController.performQuery(query);
+  var data = res.rows;
+
+  var hasMore = true;
+  if (res.rows.length != limita + 1) {
+    hasMore = false;
+  } else {
+    data.splice(limita);
+  }
+  return {
+    hasMore: hasMore,
+    data: data,
+  };
 };
