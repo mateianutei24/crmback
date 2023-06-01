@@ -32,7 +32,7 @@ module.exports = function server(useCases, model) {
     routes.companieRoute
   );
   app.use(
-    "/configurari",
+    "/configurari", 
     passport.authenticate("jwt", { session: false }),
     routes.configurariRoute
   );

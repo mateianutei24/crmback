@@ -1,15 +1,13 @@
 module.exports = function postgresDB(postgresConnection) {
   async function addIntoDatabase(table, object) {
     console.log(object);
-
     const query = `INSERT INTO ${table} RETURNING *`;
-    console.log(query);
     const res = await postgresConnection.query(query, object);
+    console.log(res);
     return true;
   }
 
   async function getObject(table, columnName, columnValue) {
-    console.log(table, columnName, columnValue);
     const query = `SELECT * FROM ${table} WHERE ${columnName} = '${columnValue}' `;
     const res = await postgresConnection.query(query, []);
     return res.rows[0];
@@ -44,21 +42,37 @@ module.exports = function postgresDB(postgresConnection) {
   }
   async function performQuery(query, values) {
     const res = await postgresConnection.query(query, values);
-    return res.rows;
+    return res;
   }
   async function register(credentials) {}
 
   async function getObjectsPagination(colection, limit, last_id, fieldName) {
     var query;
     if (last_id == "start") {
-      query = `SELECT * FROM ${colection} ORDER BY ${fieldName} LIMIT ${limit}`;
+      query = `SELECT * FROM ${colection} ORDER BY ${fieldName} LIMIT ${
+        limit + 1
+      }`;
     } else {
-      query = `SELECT * FROM ${colection} WHERE ${fieldName} > '${last_id}' ORDER BY ${fieldName}  LIMIT ${limit}`;
+      query = `SELECT * FROM ${colection} WHERE ${fieldName} > '${last_id}' ORDER BY ${fieldName}  LIMIT ${
+        limit + 1
+      }`;
     }
 
     const res = await postgresConnection.query(query, []);
-    return res.rows;
+    var hasMore = true;
+    var data = res.rows;
+
+    if (res.rows.length != limit + 1) {
+      hasMore = false;
+    } else {
+      data.splice(limit);
+    }
+    return {
+      hasMore: hasMore,
+      data: data,
+    };
   }
+
   return {
     addIntoDatabase,
     getObject,
