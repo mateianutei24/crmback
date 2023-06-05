@@ -11,7 +11,10 @@ module.exports = function companieRoute(useCases, model) {
           companie_id: req.query.companie_id,
         });
         const response = await useCases.readCompanieUseCase(readCompanieReqObj);
-        res.status(200).send(response);
+        res.status(200).json({
+          status: 200,
+          response,
+        });
       } catch (error) {
         next(error);
       }
@@ -22,7 +25,10 @@ module.exports = function companieRoute(useCases, model) {
         const response = await useCases.addCompanieUseCase(
           createCompanieReqObj
         );
-        res.status(200).send("Companie adaugata cu success");
+        res.status(200).json({
+          status: 200,
+          response: "Company added succesfully",
+        });
       } catch (error) {
         next(error);
       }
@@ -33,7 +39,10 @@ module.exports = function companieRoute(useCases, model) {
         const response = await useCases.updateCompanieUseCase(
           updateCompanieReqObj
         );
-        res.status(200).send("Companie updatata cu success");
+        res.status(200).json({
+          status: 200,
+          response: "Company updated succesfully",
+        });
       } catch (error) {
         next(error);
       }
@@ -42,7 +51,10 @@ module.exports = function companieRoute(useCases, model) {
       try {
         const deleteCompanieReqObj = model.buildDeleteCompanieReq(req.body);
         const response = useCases.deleteCompanieUseCase(deleteCompanieReqObj);
-        res.status(200).send("Companie stearsa cu succes");
+        res.status(200).json({
+          status: 200,
+          response: "Company deleted succesfully",
+        });
       } catch (error) {
         next(error);
       }
